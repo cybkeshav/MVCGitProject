@@ -1,0 +1,14 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/packages
+/MVCGITProject.Tests/obj/Debug
+/MVCGITProject.Tests/bin/Debug
+/Business/bin/Debug/netstandard2.0
+/Business/obj
+/MVCGITProject/bin
+/MVCGITProject/obj/Debug
+/.vs/MVCGITProject/v15
+/.vs/MVCGITProject/DesignTimeBuild
+/.vs/config

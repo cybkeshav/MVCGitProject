@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Github name</h2>
+        <input type="text" placeholder="Github name" class="github-search-text" data-required-error-message="Please enter github name." />
+        <button id="btnSubmit" class="btn btn-default" type="button">Search</button>
+    </div>
+    <div class="col-md-12 result-table">
+        <div class="col-md-6">
+            user name
+        </div>
+        <div class="col-md-6 user-name">
+
+        </div>
+        <div class="col-md-6">
+            location
+        </div>
+        <div class="col-md-6 user-location">
+
+        </div>
+        <div class="col-md-6">
+            avatar
+        </div>
+        <div class="col-md-6 user-avtar">
+            <img src="" height="110" />
+        </div>
+        <div class="col-md-6">
+            repos name
+        </div>
+        <div class="col-md-6 user-repos">
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $(".result-table").addClass("hidden");
+        $("#btnSubmit").click(function () {
+
+            //Validate the fields here;
+            if (!validate())
+                return false;
+
+            $.ajax({
+                type: "GET",
+                url: "/Home/GetData?SearchQuery=" + $(".github-search-text").val(),
+                success: function (res) {
+                    res = JSON.parse(res);
+                    if (res.HasError) {
+                        alert(res.ResultMessage);
+                        return;
+                    }
+                    BindDetails(res.Result);
+                },
+                error: function (err) {
+                    $(".result-table").addClass("hidden");
+                    console.log(err);
+                    alert(err);
+                }
+            });
+        });
+
+        function validate() {
+            var valid = true;
+            var txtName = ($(".github-search-text").val()).trim();
+            if (!txtName) {
+                valid = false;
+            }
+            return valid;
+        }
+
+        function BindDetails(result) {
+            var repos = [];
+            $(".user-name").html("&nbsp;" + result.name);
+            $(".user-location").html("&nbsp;" + result.location);
+            $(".user-avtar").find("img").prop("src", result.avatar_url);
+            $.each(result.repositories, function (i, obj) { repos.push(obj.name); })
+            $(".user-repos").html("&nbsp;" + repos.join(","));
+            $(".result-table").removeClass("hidden");
+        }
+
+    });
+</script>
